@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: cybersecurity-labs
+    env: static
+    buildCommand: ""
+    staticPublishPath: .
