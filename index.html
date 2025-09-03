@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberLabs - Advanced Cybersecurity Training</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="#" class="nav-logo">
+                    <img src="images/logo.png" alt="CyberLabs Logo">
+                    <span>CyberLabs</span>
+                </a>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#labs" class="nav-link">Labs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#scripts" class="nav-link">Scripts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#subscribe" class="nav-link">Subscribe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contact" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Advanced Cybersecurity Labs & Scripts</h1>
+            <p>Access premium red team, blue team, and ethical hacking resources developed by industry experts.</p>
+            <div class="hero-buttons">
+                <a href="#subscribe" class="btn btn-primary">Subscribe Now</a>
+                <a href="#labs" class="btn btn-secondary">Explore Labs</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Labs Section -->
+    <section id="labs" class="labs">
+        <div class="container">
+            <h2>Cybersecurity Labs</h2>
+            <div class="labs-grid">
+                <div class="lab-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Blue Team Labs</h3>
+                    <p>Defensive security exercises, SIEM configurations, incident response scenarios, and threat hunting techniques.</p>
+                </div>
+                <div class="lab-card">
+                    <i class="fas fa-target"></i>
+                    <h3>Red Team Labs</h3>
+                    <p>Advanced penetration testing, vulnerability assessment, exploitation techniques, and post-exploitation modules.</p>
+                </div>
+                <div class="lab-card">
+                    <i class="fas fa-code"></i>
+                    <h3>Script Repository</h3>
+                    <p>Powerful automation scripts for Kali Linux and Parrot OS covering various cybersecurity domains.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts Preview -->
+    <section id="scripts" class="scripts">
+        <div class="container">
+            <h2>Featured Scripts</h2>
+            <div class="script-tabs">
+                <button class="tab-btn active" data-tab="blue">Blue Team</button>
+                <button class="tab-btn" data-tab="red">Red Team</button>
+                <button class="tab-btn" data-tab="ethical">Ethical Hacking</button>
+            </div>
+            
+            <div class="tab-content active" id="blue-content">
+                <div class="script-card">
+                    <h3>SIEM Automation Script</h3>
+                    <p>Automates alert correlation and incident response for Splunk and ELK stack.</p>
+                    <pre><code>#!/bin/bash
+# SIEM Automation Script for Splunk
+# This script automates alert correlation and incident response
+
+LOG_DIR="/var/log/siem/"
+THRESHOLD=10
+ALERT_FILE="/opt/siem/alerts/critical_alert.log"
+
+# Monitor failed login attempts
+monitor_failed_logins() {
+    tail -f $LOG_DIR/auth.log | grep "Failed password" | while read line; do
+        username=$(echo $line | grep -oP 'for \K\S+')
+        ip=$(echo $line | grep -oP 'from \K\S+')
+        count=$(grep -c "Failed password for $username from $ip" $LOG_DIR/auth.log)
+        
+        if [ $count -gt $THRESHOLD ]; then
+            echo "$(date): Brute force attempt detected: User: $username, IP: $ip, Attempts: $count" >> $ALERT_FILE
+            # Add automatic blocking rule
+            iptables -A INPUT -s $ip -j DROP
+            # Send alert
+            echo "Brute force attempt detected. IP $ip blocked." | mail -s "SIEM Alert: Brute Force" admin@company.com
+        fi
+    done
+}
+
+# Execute monitoring
+monitor_failed_logins</code></pre>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="red-content">
+                <div class="script-card">
+                    <h3>Advanced Network Scanner</h3>
+                    <p>Stealth network reconnaissance and vulnerability identification tool.</p>
+                    <pre><code>#!/usr/bin/env python3
+# Advanced Network Scanner with stealth capabilities
+
+import scapy.all as scapy
+import socket
+import threading
+from queue import Queue
+
+print_lock = threading.Lock()
+target = input("Enter target IP or range: ")
+ports = range(1, 1000)  # Customize port range
+stealth_mode = True  # Use stealth scanning techniques
+
+def scan(port):
+    try:
+        if stealth_mode:
+            # Stealth SYN scan
+            syn_packet = scapy.IP(dst=target)/scapy.TCP(dport=port, flags="S")
+            resp = scapy.sr1(syn_packet, timeout=1, verbose=0)
+            
+            if resp and resp.haslayer(scapy.TCP):
+                if resp.getlayer(scapy.TCP).flags == 0x12:  SYN-ACK
+                    # Send RST to close connection
+                    scapy.send(scapy.IP(dst=target)/scapy.TCP(dport=port, flags="R"), verbose=0)
+                    with print_lock:
+                        print(f"[+] Port {port} is open")
+        else:
+            # Regular connect scan
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(1)
+            result = s.connect_ex((target, port))
+            if result == 0:
+                with print_lock:
+                    print(f"[+] Port {port} is open")
+            s.close()
+    except Exception as e:
+        pass
+
+def threader():
+    while True:
+        worker = q.get()
+        scan(worker)
+        q.task_done()
+
+q = Queue()
+
+for x in range(100):  # Number of threads
+    t = threading.Thread(target=threader)
+    t.daemon = True
+    t.start()
+
+for worker in ports:
+    q.put(worker)
+
+q.join()</code></pre>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="ethical-content">
+                <div class="script-card">
+                    <h3>Web Vulnerability Scanner</h3>
+                    <p>Comprehensive web application security testing tool.</p>
+                    <pre><code>#!/usr/bin/env python3
+# Web Vulnerability Scanner for ethical hacking assessments
+
+import requests
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
+
+class WebVulnScanner:
+    def __init__(self, url):
+        self.target_url = url
+        self.session = requests.Session()
+        self.links_to_ignore = []  # Add URLs to ignore
+        self.vulnerabilities = []
+
+    def extract_links(self, url):
+        try:
+            response = self.session.get(url, timeout=5)
+            soup = BeautifulSoup(response.content, "html.parser")
+            return [urljoin(url, link.get("href")) for link in soup.findAll("a")]
+        except:
+            return []
+
+    def crawl(self, url=None):
+        if url is None:
+            url = self.target_url
+        
+        href_links = self.extract_links(url)
+        for link in href_links:
+            if link not in self.links_to_ignore and self.target_url in link:
+                self.links_to_ignore.append(link)
+                print(f"[*] Crawling: {link}")
+                self.crawl(link)
+
+    def scan_xss(self):
+        print("[*] Testing for XSS vulnerabilities...")
+        test_script = "<script>alert('XSS')</script>"
+        forms = self.extract_forms(self.target_url)
+        
+        for form in forms:
+            content = self.test_xss_in_form(form, test_script)
+            if test_script in content:
+                self.vulnerabilities.append(("XSS", form.action, form.method))
+
+    def extract_forms(self, url):
+        response = self.session.get(url)
+        soup = BeautifulSoup(response.content, "html.parser")
+        return soup.findAll("form")
+
+    def test_xss_in_form(self, form, test_script):
+        action = form.get("action")
+        method = form.get("method", "get")
+        inputs_list = form.findAll("input")
+        
+        data = {}
+        for input_field in inputs_list:
+            name = input_field.get("name")
+            type_ = input_field.get("type", "text")
+            if type_ == "text":
+                data[name] = test_script
+        
+        if method.lower() == "post":
+            response = self.session.post(action, data=data)
+        else:
+            response = self.session.get(action, params=data)
+        
+        return response.content.decode()
+
+    def run_scan(self):
+        print(f"[*] Starting scan on {self.target_url}")
+        self.crawl()
+        self.scan_xss()
+        
+        if self.vulnerabilities:
+            print("[!] Vulnerabilities found:")
+            for vuln in self.vulnerabilities:
+                print(f" - {vuln[0]} at {vuln[1]} ({vuln[2]})")
+        else:
+            print("[+] No vulnerabilities detected")
+
+if __name__ == "__main__":
+    target = input("Enter target URL: ")
+    scanner = WebVulnScanner(target)
+    scanner.run_scan()</code></pre>
+                </div>
+            </div>
+            
+            <p class="script-note">Note: These are simplified examples. Full scripts are available to subscribers.</p>
+        </div>
+    </section>
+
+    <!-- Subscription Section -->
+    <section id="subscribe" class="subscription">
+        <div class="container">
+            <h2>Subscribe with Crypto</h2>
+            <p>Gain access to our complete library of cybersecurity labs, scripts, and resources.</p>
+            
+            <div class="subscription-plans">
+                <div class="plan">
+                    <h3>Basic Access</h3>
+                    <p class="price">0.05 ETH</p>
+                    <ul>
+                        <li>Blue Team Scripts</li>
+                        <li>Red Team Scripts</li>
+                        <li>Basic Lab Environments</li>
+                        <li>Community Discord Access</li>
+                    </ul>
+                    <button class="btn-plan" data-plan="basic">Subscribe</button>
+                </div>
+                
+                <div class="plan featured">
+                    <h3>Professional</h3>
+                    <p class="price">0.02 ETH</p>
+                    <ul>
+                        <li>All Basic Features</li>
+                        <li>Advanced Scripts</li>
+                        <li>Custom Lab Environments</li>
+                        <li>Priority Support</li>
+                        <li>Monthly Live Sessions</li>
+                    </ul>
+                    <button class="btn-plan" data-plan="pro">Subscribe</button>
+                </div>
+                
+                <div class="plan">
+                    <h3>Enterprise</h3>
+                    <p class="price">0.05 ETH</p>
+                    <ul>
+                        <li>All Professional Features</li>
+                        <li>Custom Script Development</li>
+                        <li>Private Training Sessions</li>
+                        <li>Dedicated Support</li>
+                    </ul>
+                    <button class="btn-plan" data-plan="enterprise">Subscribe</button>
+                </div>
+            </div>
+            
+            <div class="crypto-payment">
+                <h3>Payment Instructions</h3>
+                <p>Send exactly <span id="eth-amount">0.02</span> ETH (erc-20) to the following address:</p>
+                <div class="crypto-address">
+                    <code id="eth-address">0x398f5c94010cf4b4ee40e2cf617490be0053c0b0</code>
+                    <button class="copy-btn" onclick="copyAddress()">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <p>After payment, email your transaction hash to <strong>bettarap254@gmail.com</strong> with your Discord username to receive your access code.</p>
+                
+                <div class="access-form">
+                    <h3>Already Paid? Enter Access Code</h3>
+                    <form id="accessForm">
+                        <input type="text" placeholder="Enter your access code" required>
+                        <button type="submit">Access Content</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CyberLabs</h3>
+                    <p>Advanced cybersecurity training and resources for professionals.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Connect With Me</h3>
+                    <div class="social-links">
+                        <a href="https://discord.com/users/bta_5kp" target="_blank">
+                            <i class="fab fa-discord"></i> Discord
+                        </a>
+                        <a href="https://linkedin.com/in/yourprofile" target="_blank">
+                            <i class="fab fa-linkedin"></i> LinkedIn
+                        </a>
+                        <a href="https://github.com/yourusername" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        <a href="https://x.com/k15_95" target="_blank">
+                            <i class="fab fa-twitter"></i> X
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>Email: bettarap254@gmail.com</p>
+                    <p>For access issues: bettarap254@gmail.com</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 CyberLabs. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+</body>
+  </html>
