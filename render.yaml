@@ -2,5 +2,5 @@ services:
   - type: web
     name: cybersecurity-labs
     env: static
-    buildCommand: ""
+    buildCommand: "echo 'Static site - no build needed'"
     staticPublishPath: .
