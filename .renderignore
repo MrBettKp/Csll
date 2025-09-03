@@ -1,0 +1,6 @@
+# Ignore Python-related files during deployment
+requirements.txt
+scripts/blue-team/
+scripts/red-team/
+scripts/ethical-hacking/
+wordlists/
