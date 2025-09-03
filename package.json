@@ -1,26 +1,21 @@
 {
   "name": "cybersecurity-labs",
   "version": "1.0.0",
-  "description": "Advanced cybersecurity scripts and tools",
-  "main": "index.js",
+  "description": "Advanced cybersecurity training platform",
+  "main": "index.html",
   "scripts": {
-    "start": "serve -s . -l 3000"
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "serve -s . -l 3000",
+    "build": "echo 'No build step required for static site'"
   },
   "dependencies": {
-    "js-md4": "0.3.2",
-    "axios": "1.1.3",
-    "commander": "9.4.1",
-    "progress": "2.0.3",
-    "node-rsa": "1.1.1",
-    "crypto-js": "4.1.1"
+    "serve": "^14.2.0"
   },
   "keywords": [
     "cybersecurity",
     "hacking",
-    "pentesting",
-    "security"
+    "training",
+    "labs"
   ],
-  "author": "ArapKBett",
+  "author": "Arap",
   "license": "MIT"
 }
